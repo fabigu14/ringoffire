@@ -1,0 +1,29 @@
+.start-screen {
+    height: 100vh;
+    width: 100vw;
+    background-color: #404040;
+    display: flex;
+    justify-content: center;
+    img {
+        height: 100vh;
+    }
+}
+
+.start-btn-box{
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 100px;
+    display: flex;
+    justify-content: center;
+    img{
+        width: 35vw;
+        height: auto;
+
+        &:hover{
+            filter: brightness(1.3);
+            cursor: pointer;
+        }
+    }
+    
+}
