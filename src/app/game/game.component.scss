@@ -2,6 +2,8 @@
     height: 100vh;
     width: 100vw;
     background-image: url("/assets/img/board.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -24,12 +26,16 @@
 }
 
 .flip-top-card {
-    transition: all 500ms ease-in-out;
+    transition: all 250ms ease-in-out;
     transform: scale(1.01) translateY(-20px) rotateY(-90deg) !important;
 }
 
+.played-card {
+    transform: scale(1.2) translateY(-200px) translateX(150px) rotate(-10deg) rotateY(0deg);
+}
+
 .take-card {
-    animation: pick-card-animation 2s ease-in-out;
+    animation: pick-card-animation 1s ease-in-out;
     transform: scale(1.2) translateY(-200px) translateX(150px) rotate(-10deg) rotateY(-180deg);
 }
 
@@ -37,14 +43,13 @@
     0% {
         transform: scale(1) rotateY(-90deg) translateY(-20px);
     }
-    
     25% {
         transform: scale(1) rotateY(-90deg) translateY(-20px);
     }
-    50%{
-        transform: scale(1) rotateY(-180deg) translateY(-20px);
+    50% {
+        transform: scale(1) rotateY(0deg) translateY(-20px);
     }
     100% {
-        transform: scale(1.2) translateY(-200px) translateX(150px) rotate(-10deg) rotateY(-180deg);
+        transform: scale(1.2) translateY(-200px) translateX(150px) rotate(-10deg) rotateY(0deg);
     }
 }
