@@ -1,8 +1,8 @@
 .player {
+    padding: 10px 0;
     display: flex;
     align-items: center;
-    background-color: #fda31c;
-    padding: 15px 0;
+    background-color: #6b6a68;
     width: 300px;
     border-bottom-left-radius: 50px;
     border-top-left-radius: 50px;
@@ -12,6 +12,10 @@
     }
     img {
         margin-left: 20px;
-        height: 70px;
+        height: 40px;
     }
+}
+
+.active-player{
+    background-color: #fda31c;
 }

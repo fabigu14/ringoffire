@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import {MatDialog,} from '@angular/material/dialog';
+import { Component, OnInit } from '@angular/core'
 import { Game } from 'src/models/game';
+import {MatDialog,} from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
+
 
 @Component({
   selector: 'app-game',
@@ -57,16 +58,14 @@ export class GameComponent implements OnInit {
     }, 250);
     
   }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(DialogAddPlayerComponent, {
+      width: '250px',
+    });
+    dialogRef.afterClosed().subscribe(name => {
+      this.game.players.push(name)
+    });
+  }
 }
 
-openDialog(): void {
-  const dialogRef = this.dialog.open(DialogOverviewExampleDialog, {
-    width: '250px',
-    data: {name: this.name, animal: this.animal}
-  });
-
-  dialogRef.afterClosed().subscribe(result => {
-    console.log('The dialog was closed');
-    this.animal = result;
-  });
-}
