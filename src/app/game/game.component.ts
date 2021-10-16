@@ -21,6 +21,8 @@ export class GameComponent implements OnInit {
 
   ngOnInit(): void {
     this.newGame();
+    console.log(this.game.players.length > 0);
+    
   }
 
   newGame() {
@@ -31,20 +33,36 @@ export class GameComponent implements OnInit {
 
   takeCard() {
     if (!this.pickCardAnimation) {
-      this.currentCard = this.game.stack.pop();
-    
-      this.pickCardAnimation = true;
-      this.topCardFlipped = false;
+
+      this.removeFromStack();
 
       this.flipBackTopCard();
+
+      this.nextPlayer();
+
       setTimeout(() => {
         
-        this.pickCardAnimation = false;
-        this.game.playedCards.push(this.currentCard);
+        this.addToPlayed();
         
-      }, 1000);
+      }, 950);
     }
 
+  }
+
+  nextPlayer(){
+    this.game.currentPlayer++;
+    this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
+  }
+
+  removeFromStack(){
+    this.currentCard = this.game.stack.pop();
+    this.pickCardAnimation = true;
+    this.topCardFlipped = false;
+  }
+
+  addToPlayed(){
+    this.pickCardAnimation = false;
+    this.game.playedCards.push(this.currentCard);
   }
 
   flipBackTopCard(){
@@ -63,8 +81,13 @@ export class GameComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogAddPlayerComponent, {
       width: '250px',
     });
+
+    
     dialogRef.afterClosed().subscribe(name => {
-      this.game.players.push(name)
+      if (name && name.length > 0) {
+        this.game.players.push(name);
+      }
+      
     });
   }
 }

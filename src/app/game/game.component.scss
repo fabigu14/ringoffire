@@ -14,8 +14,6 @@
     right: 0;
 }
 
-
-
 .btn-add {
     position: absolute;
     right: 32px;
@@ -36,6 +34,13 @@
         transform: scale(1.01) translateY(-20px);
         cursor: pointer;
     }
+}
+
+.overlay {
+    position: absolute;
+    width: 120px;
+    height: 185px;
+    z-index: 99;
 }
 
 .flip-top-card {
