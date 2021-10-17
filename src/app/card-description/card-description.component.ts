@@ -16,9 +16,9 @@ export class CardDescriptionComponent implements OnInit, OnChanges {
     { title: 'Chicks', description: 'All girls drink.' },
     { title: 'Heaven', description: 'Put your hands up! The last player drinks!' },
     { title: 'Mate', description: 'Pick a mate. Your mate must always drink when you drink and the other way around.' },
-    { title: 'Thumbmaster', description: '' },
+    { title: 'Thumbmaster', description: 'You are the Thumbmaster! Put your thumb on the table, as soon as the other players realise, they have to put their thumb on the table to. Last one has to drink!' },
     { title: 'Men', description: 'All men drink.' },
-    { title: 'Quizmaster', description: '' },
+    { title: 'Quizmaster', description: 'You are the Quizmaster! No one is allowed to answer your Questions, if they do, they have to drink.' },
     { title: 'Never have i ever...', description: 'Say something you nnever did. Everyone who did it has to drink.' },
     { title: 'Rule', description: 'Make a rule. Everyone needs to drink when he breaks the rule.' },
   ];
@@ -39,6 +39,34 @@ export class CardDescriptionComponent implements OnInit, OnChanges {
       this.title = this.cardAction[cardNumber - 1].title;
       this.description = this.cardAction[cardNumber - 1].description;
     }
+  }
+
+  resolveTitle(){
+    let title;
+    if (this.players == 0) {
+      title = 'Add players';
+    } else if(!this.card){
+      title = 'Please pick a card';
+    }
+    else{
+      title = this.title;
+    }
+
+    return title;
+  }
+
+  resolveDescription(){
+    let description;
+    if (this.players == 0) {
+      description = 'Add players by clicking + button';
+    } else if(!this.card){
+      description = 'Please click on the card stack to pick a card';
+    }
+    else{
+      description = this.description;
+    }
+
+    return description;
   }
 
 }
