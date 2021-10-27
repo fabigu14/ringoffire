@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core'
 import { Game } from 'src/models/game';
-import {MatDialog,} from '@angular/material/dialog';
+import { MatDialog, } from '@angular/material/dialog';
 import { DialogAddPlayerComponent } from '../dialog-add-player/dialog-add-player.component';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-game',
@@ -18,30 +19,42 @@ export class GameComponent implements OnInit {
   currentCard: string;
 
 
-  constructor(public firestore: AngularFirestore, public dialog: MatDialog) {
-    
+  constructor(private route: ActivatedRoute, private firestore: AngularFirestore, public dialog: MatDialog) {
+
   }
 
   ngOnInit(): void {
     this.newGame();
+    this.route.params.subscribe((params) => {
+
+      this.subscribeGame(params.id);
+    })
+
+  }
+
+  /*
+  * This function subscribes data from a particular culum in the database(games-> id) 
+  */
+  subscribeGame(id){
     this
     .firestore
     .collection('games')
+    .doc(id)
     .valueChanges()
     .subscribe((game) => {
-      console.log(game);
-      
+      this.updateGame(game);
     });
+  }
+
+  updateGame(game){
+    this.game.currentPlayer = game.currentPlayer;
+    this.game.playedCards = game.playedCards;
+    this.game.players = game.players;
+    this.game.stack = game.stack;
   }
 
   newGame() {
     this.game = new Game();
-    console.log(this.game);
-    this
-    .firestore
-    .collection('games')
-    .add(this.game.toJSON())
-
   }
 
   takeCard() {
@@ -54,40 +67,40 @@ export class GameComponent implements OnInit {
       this.nextPlayer();
 
       setTimeout(() => {
-        
+
         this.addToPlayed();
-        
+
       }, 950);
     }
 
   }
 
-  nextPlayer(){
+  nextPlayer() {
     this.game.currentPlayer++;
     this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
   }
 
-  removeFromStack(){
+  removeFromStack() {
     this.currentCard = this.game.stack.pop();
     this.pickCardAnimation = true;
     this.topCardFlipped = false;
   }
 
-  addToPlayed(){
+  addToPlayed() {
     this.pickCardAnimation = false;
     this.game.playedCards.push(this.currentCard);
   }
 
-  flipBackTopCard(){
+  flipBackTopCard() {
     setTimeout(() => {
       this.animationCompleted = false;
       this.topCardFlipped = true;
-      
+
       setTimeout(() => {
         this.animationCompleted = true;
       }, 500);
     }, 250);
-    
+
   }
 
   openDialog(): void {
@@ -95,12 +108,12 @@ export class GameComponent implements OnInit {
       width: '250px',
     });
 
-    
+
     dialogRef.afterClosed().subscribe(name => {
       if (name && name.length > 0) {
         this.game.players.push(name);
       }
-      
+
     });
   }
 }
