@@ -12,11 +12,9 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class GameComponent implements OnInit {
 
-  pickCardAnimation = false;
-  animationCompleted = true;
-  topCardFlipped = true;
+
   game: Game;
-  currentCard: string;
+  gameId: string;
 
 
   constructor(private route: ActivatedRoute, private firestore: AngularFirestore, public dialog: MatDialog) {
@@ -26,8 +24,8 @@ export class GameComponent implements OnInit {
   ngOnInit(): void {
     this.newGame();
     this.route.params.subscribe((params) => {
-
-      this.subscribeGame(params.id);
+      this.gameId = params.id;
+      this.subscribeGame();
     })
 
   }
@@ -35,41 +33,55 @@ export class GameComponent implements OnInit {
   /*
   * This function subscribes data from a particular culum in the database(games-> id) 
   */
-  subscribeGame(id){
+  subscribeGame() {
     this
-    .firestore
-    .collection('games')
-    .doc(id)
-    .valueChanges()
-    .subscribe((game) => {
-      this.updateGame(game);
-    });
+      .firestore
+      .collection('games')
+      .doc(this.gameId)
+      .valueChanges()
+      .subscribe((game) => {
+        this.updateGame(game);
+      });
   }
 
-  updateGame(game){
+  updateGame(game) {
     this.game.currentPlayer = game.currentPlayer;
     this.game.playedCards = game.playedCards;
     this.game.players = game.players;
     this.game.stack = game.stack;
+    this.game.pickCardAnimation = game.pickCardAnimation;
+    this.game.animationCompleted = game.animationCompleted;
+    this.game.topCardFlipped = game.topCardFlipped;
+    this.game.currentCard = game.currentCard;
   }
 
   newGame() {
     this.game = new Game();
   }
 
+  saveGame() {
+    this
+      .firestore
+      .collection('games')
+      .doc(this.gameId)
+      .update(this.game.toJSON());
+      console.log(this.game);
+      
+  }
+
   takeCard() {
-    if (!this.pickCardAnimation) {
+    if (!this.game.pickCardAnimation) {
 
       this.removeFromStack();
 
       this.flipBackTopCard();
 
       this.nextPlayer();
-
+      this.saveGame();
       setTimeout(() => {
 
         this.addToPlayed();
-
+        this.saveGame();
       }, 950);
     }
 
@@ -78,26 +90,31 @@ export class GameComponent implements OnInit {
   nextPlayer() {
     this.game.currentPlayer++;
     this.game.currentPlayer = this.game.currentPlayer % this.game.players.length;
+    
   }
 
   removeFromStack() {
-    this.currentCard = this.game.stack.pop();
-    this.pickCardAnimation = true;
-    this.topCardFlipped = false;
+    this.game.currentCard = this.game.stack.pop();
+    this.game.pickCardAnimation = true;
+    this.game.topCardFlipped = false;
+   
   }
 
   addToPlayed() {
-    this.pickCardAnimation = false;
-    this.game.playedCards.push(this.currentCard);
+    this.game.pickCardAnimation = false;
+    this.game.playedCards.push(this.game.currentCard);
+    
   }
 
   flipBackTopCard() {
     setTimeout(() => {
-      this.animationCompleted = false;
-      this.topCardFlipped = true;
+      this.game.animationCompleted = false;
+      this.game.topCardFlipped = true;
+      this.saveGame();
 
       setTimeout(() => {
-        this.animationCompleted = true;
+        this.game.animationCompleted = true;
+        this.saveGame();
       }, 500);
     }, 250);
 
@@ -112,6 +129,7 @@ export class GameComponent implements OnInit {
     dialogRef.afterClosed().subscribe(name => {
       if (name && name.length > 0) {
         this.game.players.push(name);
+        this.saveGame();
       }
 
     });
