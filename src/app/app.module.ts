@@ -18,6 +18,7 @@ import {MatCardModule} from '@angular/material/card';
 import { CardDescriptionComponent } from './card-description/card-description.component';
 import { AngularFireModule } from '@angular/fire/compat';
 import { environment } from '../environments/environment';
+import { PlayerMobileComponent } from './player-mobile/player-mobile.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { environment } from '../environments/environment';
     GameComponent,
     PlayerComponent,
     DialogAddPlayerComponent,
-    CardDescriptionComponent
+    CardDescriptionComponent,
+    PlayerMobileComponent
   ],
   imports: [
     BrowserModule,

@@ -31,7 +31,20 @@ export class Game {
       currentCard: this.currentCard
     }
   }
+  
+  public resetStack(){
+    for (let i = 1; i < 14; i++) {
+      this.stack.push('spade_' + i);
+      this.stack.push('clubs_' + i);
+      this.stack.push('hearts_' + i);
+      this.stack.push('diamonds_' + i);
+    }
+  
+    shuffle(this.stack);
+  }
 }
+
+
 
 function shuffle(array) {
   let currentIndex = array.length, randomIndex;

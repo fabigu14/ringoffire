@@ -3,4 +3,11 @@
     bottom: 32px;
     left: 150px;
     right: 150px;
+
+    @media(max-width: 960px){
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100px;
+    }
 }

@@ -9,16 +9,65 @@
     align-items: center;
 }
 
-.player-label {
-    position: absolute;
+.scroll-container {
+    overflow-x: auto;
+    top: 0;
+    left: 0;
     right: 0;
+    position: absolute;
+    display: flex;
     z-index: 1;
+
+    app-player-mobile {
+        margin-left: 8px;
+    }
+}
+
+.scroll-container-desktop {
+    top: 50px;
+    right: 0;
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 62%;
+    z-index: 1;
+
+    app-player {
+        margin-top: 16px;
+    }
+}
+
+::-webkit-scrollbar {
+    width: 9px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #3f51b5;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #33418e;
 }
 
 .btn-add {
     position: absolute;
     right: 32px;
     bottom: 32px;
+
+    @media (max-width: 720px) {
+        bottom: 105px;
+    }
 }
 
 .card-stack {
@@ -57,6 +106,17 @@
     animation: pick-card-animation 1s ease-in-out;
     transform: scale(1.2) translateY(-200px) translateX(150px) rotate(-10deg) rotateY(-180deg);
 }
+@media (min-width: 720px) {
+    .hide-mobile {
+        display: none;
+    }
+}
+
+@media (max-width: 720px) {
+    .hide-desktop {
+        display: none;
+    }
+}
 
 @keyframes pick-card-animation {
     0% {
@@ -71,4 +131,11 @@
     100% {
         transform: scale(1.2) translateY(-200px) translateX(150px) rotate(-10deg) rotateY(0deg);
     }
+}
+
+@media (max-width: 720px) {
+    ::-webkit-scrollbar {
+        height: 0;
+    }
+
 }

@@ -65,7 +65,6 @@ export class GameComponent implements OnInit {
       .collection('games')
       .doc(this.gameId)
       .update(this.game.toJSON());
-      console.log(this.game);
       
   }
 
@@ -94,9 +93,15 @@ export class GameComponent implements OnInit {
   }
 
   removeFromStack() {
-    this.game.currentCard = this.game.stack.pop();
-    this.game.pickCardAnimation = true;
-    this.game.topCardFlipped = false;
+
+    if(this.game.stack.length > 0){
+      this.game.currentCard = this.game.stack.pop();
+      this.game.pickCardAnimation = true;
+      this.game.topCardFlipped = false;
+    }
+    else{
+      this.game.resetStack();
+    }
    
   }
 
